@@ -1,40 +1,47 @@
-import random
+# Stock Portfolio Tracker
 
-words = ["python", "apple", "mango", "tiger", "house"]
+# Hardcoded stock prices
+stock_prices = {
+    "AAPL": 180,
+    "TSLA": 250,
+    "GOOG": 140,
+    "AMZN": 170,
+    "MSFT": 320
+}
 
-word = random.choice(words)
+print("=== Stock Portfolio Tracker ===")
 
-guessed = []
-chances = 6
+total_investment = 0
+portfolio = {}
 
-print("Welcome to Hangman Game!")
+# Input number of stocks
+n = int(input("How many different stocks you want to add? "))
 
-while chances > 0:
+for i in range(n):
+    stock = input("Enter stock name (AAPL/TSLA/GOOG/AMZN/MSFT): ").upper()
+    quantity = int(input("Enter quantity: "))
 
-    display = ""
-
-    for letter in word:
-        if letter in guessed:
-            display += letter + " "
-        else:
-            display += "_ "
-
-    print("\nWord:", display)
-
-    if "_" not in display:
-        print("Congratulations! You Won!")
-        break
-
-    guess = input("Enter a letter: ")
-
-    if guess in word:
-        guessed.append(guess)
-        print("Correct Guess!")
+    if stock in stock_prices:
+        value = stock_prices[stock] * quantity
+        portfolio[stock] = value
+        total_investment += value
     else:
-        chances -= 1
-        print("Wrong Guess!")
-        print("Remaining Chances:", chances)
+        print("Invalid stock name!")
 
-if chances == 0:
-    print("Game Over!")
-    print("The word was:", word)
+print("\n--- Portfolio Summary ---")
+for stock, value in portfolio.items():
+    print(f"{stock}: ₹{value}")
+
+print(f"\nTotal Investment Value: ₹{total_investment}")
+
+# Optional: Save to file
+save = input("\nDo you want to save result? (yes/no): ").lower()
+
+if save == "yes":
+    with open("portfolio.txt", "w") as file:
+        file.write("Stock Portfolio Summary\n")
+        for stock, value in portfolio.items():
+            file.write(f"{stock}: ₹{value}\n")
+        file.write(f"\nTotal Investment: ₹{total_investment}\n")
+
+    print("Saved to portfolio.txt")
